@@ -27,8 +27,20 @@ public class Koch {
 	/** Gets n, x1, y1, x2, y2,
      *  and draws a Koch curve of depth n from (x1,y1) to (x2,y2). */
 	public static void curve(int n, double x1, double y1, double x2, double y2) {
-		StdDraw.line(x1, y1, x2, y2);
-		//// Write the rest of your code below.
+		if (n == 0) {
+			StdDraw.line(x1, y1, x2, y2);
+			return;
+		}
+		double ax = (2.0 * x1 + x2) / 3.0;
+        double ay = (2.0 * y1 + y2) / 3.0;
+        double bx = (x1 + 2.0 * x2) / 3.0;
+        double by = (y1 + 2.0 * y2) / 3.0;
+		double cx = (Math.sqrt(3) / 6.0) * (ay - by) + 0.5 * (ax + bx);
+        double cy = (Math.sqrt(3) / 6.0) * (bx - ax) + 0.5 * (ay + by);
+		curve(n - 1, x1, y1, ax, ay);
+        curve(n - 1, ax, ay, cx, cy);
+        curve(n - 1, cx, cy, bx, by);
+        curve(n - 1, bx, by, x2, y2);
 	}
 
     /** Gets n, and draws a Koch snowflake of n edges in the standard canvass. */
@@ -37,6 +49,13 @@ public class Koch {
 		StdDraw.setYscale(0, 1.1);
 		StdDraw.setXscale(0, 1.1);
 		// Draws a Koch snowflake of depth n
-		//// Write the rest of your code below.
+		double xA = 0.1, yA = 0.1;
+        double xB = 1.0, yB = 0.1;
+        double side = xB - xA;
+        double xC = (xA + xB) / 2.0;
+        double yC = yA + (Math.sqrt(3) / 2.0) * side;
+        curve(n, xA, yA, xC, yC);
+        curve(n, xC, yC, xB, yB);
+        curve(n, xB, yB, xA, yA);
 	}
 }
